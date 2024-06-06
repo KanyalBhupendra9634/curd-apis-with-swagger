@@ -1,0 +1,131 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "My API"
+    },
+    "securityDefinitions": {
+      "BearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "paths": {
+      "/registerUser": {
+        "post": {
+          "summary": "Register a new user",
+          "description": "Register a new user with full name, username, password, and about section",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fullName": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "about": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "User registered successfully"
+            },
+            "400": {
+              "description": "Bad request - Registration failed"
+            }
+          }
+        }
+      },
+      "/loginUser": {
+        "post": {
+          "summary": "Login as a user",
+          "description": "Login with username and password",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User logged in successfully"
+            },
+            "400": {
+              "description": "Bad request - Login failed"
+            }
+          }
+        }
+      },
+      "/getUserData": {
+        "get": {
+          "summary": "Get user data",
+          "description": "Retrieve user data by token",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User data retrieved successfully"
+            },
+            "401": {
+              "description": "Unauthorized - Invalid token"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      },
+      "/logoutUser": {
+        "post": {
+          "summary": "Logout a user",
+          "description": "Logout a user by invalidating the authentication token",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User logged out successfully"
+            },
+            "401": {
+              "description": "Unauthorized - Invalid token"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          }
+        }
+      }
+    }
+  }
+  

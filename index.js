@@ -1,31 +1,36 @@
 // app.js
 const express = require('express');
 const {mongoose} =require('mongoose')
-const exploredRouter = require('./router/elxploredData.router.js')
+require('dotenv').config();
+const exploredRouter = require('./router/userData.router.js')
 const app = express();
-const PORT = 3000;
 
-// Connect to MongoDB
-mongoose.connect("mongodb+srv://kanyalgboby:x2eRclBoq6JJ9Vri@cluster0.wwhg0qt.mongodb.net/taskDb?retryWrites=true&w=majority&appName=Cluster0", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+
+const port = process.env.PORT;
+const databaseUrl = process.env.DATABASE_URL;
+
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/swagger.json');
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  });
-
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((req, res, next) => {
     exploredRouter(req,res,next)
 })
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Connect to MongoDB then start the port
+mongoose.connect(databaseUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('Database connected!');
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    })
+    .catch(err => {
+        console.error('Database connection error:', err);
+        process.exit(1);
+    });
+
