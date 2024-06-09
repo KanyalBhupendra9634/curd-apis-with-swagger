@@ -4,7 +4,7 @@
   "description": "task",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon index.js"
   },
   "author": "Bhupendra Kanyal",
@@ -17,5 +17,9 @@
     "mongoose": "^8.3.5",
     "nodemon": "^3.1.0",
     "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "node-mocks-http": "^1.14.1"
   }
 }
